@@ -17,7 +17,7 @@ const Сounter = function () {
             <h1>{count}</h1>
             <button onClick={increment}>Increment</button> 
             {/* <button onClick={() => likes -= 1}>Decrement</button>   //  use arrow function */}
-            <button onClick={decrement}>Increment</button> 
+            <button onClick={decrement}>Decrement</button> 
         </div>
     )
 }

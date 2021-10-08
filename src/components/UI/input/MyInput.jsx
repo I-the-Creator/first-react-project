@@ -6,7 +6,7 @@ import classes from './MyInput.module.css'
 
 const MyInput = React.forwardRef((props, ref) => {
     return (
-        // все что будет "попадать" в MyInput будет применяться к input
+        // все что будет "попадать" в MyInput будет применяться к input (ссылка 'ref' передавается )
         <input ref={ref} className={classes.myInput} {...props}/>
     );
 });

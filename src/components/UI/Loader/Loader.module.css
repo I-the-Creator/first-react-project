@@ -1,0 +1,21 @@
+.loader {
+    width: 100px;
+    height: 100px;
+    /* делаем окружность */
+    border-radius: 50%;  
+    border: 3px dashed teal;
+    /* добавлеям анимацию на класс - линейная и бесконечная, длительность 3 сек*/
+    animation: rotate 1.5s infinite linear;
+}
+
+/* ключевые кадры для анимации  - делает полный коуг и увеличивается */
+@keyframes rotate {
+    /* НАЧАЛО АНИМАЦИИ */
+    from {
+        transform: rotate(0deg) scale(0.5);
+    }
+        /* КОНЕЦ АНИМАЦИИ */
+    to {
+        transform: rotate(360deg) scale(1);
+    }
+}

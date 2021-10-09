@@ -4,7 +4,7 @@ import MyButton from './UI/button/MyButton';
 
     // получаем props on родителя - PostList
 const PostItem = (props) => {
-    console.log(props);   //  список постов
+    // console.log(props);   // debug -  получаем список объектов (постов)
     return (
         <div className="post">
             <div className="post__content">

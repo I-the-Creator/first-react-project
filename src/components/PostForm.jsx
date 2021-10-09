@@ -76,7 +76,7 @@ const addNewPost = (ev) => {
                     // изменяем только нужное на поле, а весь остальной объект остается неизменным
                     onChange={e => setPost({...post, title: e.target.value})}
                     type="text" 
-                    placeholder="Post header"
+                    placeholder="Post title"
                 />
 
                 <MyInput
@@ -85,7 +85,7 @@ const addNewPost = (ev) => {
                     // из event - полe target - достаем поле value и помещаем в state
                     onChange={e => setPost({...post, body: e.target.value})}
                     type="text" 
-                    placeholder="Post description"
+                    placeholder="Text"
                 />
 
                 {/* Неуправляемый стандартный компонент */}

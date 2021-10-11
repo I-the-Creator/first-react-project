@@ -16,7 +16,7 @@
 .post {
     display: flex;
     padding: 15px;
-    border: 2px solid teal;
+    border: 2px solid #0072B5;
     margin-top: 15px;
     justify-content: space-between; /* выравниваем содержимое чтоб кнопка была справа*/
     align-items: center;
@@ -45,13 +45,13 @@
 
 /* НОМЕРА СТРАНИЦ */
 .page-button {
-    padding: 10px;
-    border: 1px solid teal;
+    padding: 8px;
+    border: 1px solid #0072B5;
     cursor: pointer;
 }
 
 /* ТЕКУЩИЙ НОМЕР СТРАНИЦЫ */
 .page__current {
-    border: 2px solid orange;
+    border: 2px solid #FDAC53;
     font-weight: bold;
 }

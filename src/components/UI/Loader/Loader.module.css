@@ -3,7 +3,7 @@
     height: 50px;
     /* делаем окружность */
     border-radius: 50%;  
-    border: 3px dashed teal;
+    border: 3px dashed #0072B5;
     /* добавлеям анимацию на класс - линейная и бесконечная, длительность 3 сек*/
     animation: rotate 1s infinite linear;
 }

@@ -5,7 +5,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
     // props это объект и мы можем в явном виде передать в props массив объектов 'posts' и 'title'
     // это деструктуризация
 const PostList = ({posts, title, remove}) => {
-    console.log(posts);   // массив постов полученный в App.js из PostService.js
+    // console.log(posts);   // массив постов полученный в App.js из PostService.js
 
 
 //  Условная отрисовка 

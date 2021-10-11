@@ -6,7 +6,7 @@ export const useSortedPosts = (posts, sort) => {
     // отсортированный массив (или по умолчанию, если сортировка не применялась) - помещаем в PostLists
     //  мемоизация - следим за выбранным алгоритмом сортировки и за изменением массива с постами 'posts'
     const sortedPosts = useMemo(() => {
-        console.log(sort); //  пусто по умолчанию, после выбора - title или body
+        // console.log(sort); //  пусто по умолчанию, после выбора - title или body
         console.log('SORTING FUNCTION EXECUTED');
             // проверка на 'пустой' filter.sort
             // если на пустой, то возвращаем отсортированный массив

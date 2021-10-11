@@ -2,7 +2,7 @@ import React from 'react';
 
 // принимает props-ы: 1) массив объектов 'option', 2)default 'option', 3)value, 4)
 const MySelect = ({options, defaultValue, value, onChange}) => {
-    console.log(options);  // массив вариантов сортировки
+    // console.log(options);  // массив вариантов сортировки
     return (
         <select
             value={value}

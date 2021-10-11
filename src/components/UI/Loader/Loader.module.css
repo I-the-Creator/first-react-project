@@ -1,11 +1,11 @@
 .loader {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     /* делаем окружность */
     border-radius: 50%;  
     border: 3px dashed teal;
     /* добавлеям анимацию на класс - линейная и бесконечная, длительность 3 сек*/
-    animation: rotate 1.5s infinite linear;
+    animation: rotate 1s infinite linear;
 }
 
 /* ключевые кадры для анимации  - делает полный коуг и увеличивается */

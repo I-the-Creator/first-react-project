@@ -11,17 +11,19 @@ export const useFetching = (callback) => {
     // пустая строка по умолчанию, если ошибка произойдет то помещаем ее текст в аргумент состояния
     const [error, setError] = useState('')  
 
-    // фобработка fetch запроса и ошибок
+    // обработка fetch запроса и ошибок
     const fetching = async () => {
         try {
-            setIsLoading(true);  // меняем state "крутилки" на true
-            await callback();  // вызов функции fetch запроса
+            setIsLoading(true)  // меняем state "крутилки" на true
+            // console.log(callback);
+            await callback()  // вызов функции fetch запроса
 
         } catch (e) {  // если произошла ошибка
-            setError(e.message);   // помещаем в state текст ошибки
+            setError(e.message)   // помещаем в state текст ошибки
+            console.log(e) // debug
 
         } finally {
-            setIsLoading(false);  // меняем state "крутилки" на false при любом исходе, неважно была ошибка или нет
+            setIsLoading(false)  // меняем state "крутилки" на false при любом исходе, неважно была ошибка или нет
         }
     }
 //  возвращаем из хука результат функции 'fetching' - попадает в App.js, в параметр "fetchPosts" хука "useFetching"

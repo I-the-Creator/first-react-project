@@ -5,16 +5,24 @@ import axios from "axios"
 export default class PostService {
 
     // функция для получения массива постов и проверки что получаем именно массив
-    static async getAll() {
+    // в getAll добавляем параметры запроса (query properties) в качестве аргументов, 10 постов на странице начиная с первой
+    static async getAll(limit =10, page = 1) {
 
         // отлавливаем ошибку при запросе
-        try {
-            // ЗАПРОС
-            const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+        // try {
+            // ЗАПРОС axios, вторым параметром в get передаем объект свойств которые будут добавлены к URL
+            const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+                params: {
+                    _limit: limit,
+                    _page: page
+                }
+            })
             // console.log(response.data)  // debug  - получаем список объектов (постов)
-            return response.data
-        } catch (error) {
-            console.log(error)
-        }
+            // return response.data
+            // console.log(response) // возвращаем response целиком для обращения к header и дальнейшей пагинации
+            return response
+        // } catch (error) {
+        //     console.log(error)
+        // }
     }
 }

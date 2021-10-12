@@ -1,10 +1,11 @@
-// hook для обработки индикации запросов к API - показ и сокрытие "крутилки"
+// hook для обработки запросов к API - показ и сокрытие "крутилки" во время запроса, сам запрос
 // и обработка ошибок при запросе
 
 import { useState } from "react/cjs/react.development"
 
 // аргумент функции - callback -  некоторый запрос перед которым показываем "крутилку" и после выполнения которого, скрыть "крутилку"
-export const useFetching = (callback) => {
+export const useFetching = (callback) => { // callback - функция полученная из App.js в качестве аргумента
+    // console.log(callback); //  debug
     // создаем состояние отвечающее за загрузку - по умолчанию false
     const [isLoading, setIsLoading] = useState(false)
     // базовый кейс- состояние для обработки ошибок при запросе
@@ -12,11 +13,12 @@ export const useFetching = (callback) => {
     const [error, setError] = useState('')  
 
     // обработка fetch запроса и ошибок
-    const fetching = async () => {
+    const fetching = async (...args) => {  // извлекаем аргументы из принятого callback
+        // console.log(...args); //  debug
         try {
             setIsLoading(true)  // меняем state "крутилки" на true
             // console.log(callback);
-            await callback()  // вызов функции fetch запроса
+            await callback(...args)  // вызов принятой функции fetch запроса, передаем туда принятые аргументы
 
         } catch (e) {  // если произошла ошибка
             setError(e.message)   // помещаем в state текст ошибки

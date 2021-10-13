@@ -6,7 +6,10 @@
 
 #root {
     display: flex;
-    justify-content: center;   /* выравниваем содержимое по центру */
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+
 }
 
 .App {
@@ -55,3 +58,22 @@
     border: 2px solid #FDAC53;
     font-weight: bold;
 }
+
+/* навигационная панель */
+.navbar {
+    height: 50px;
+    /* ширина на все окно браузера */
+    width: 100vw;
+    display: flex;
+    /* выравниваем содержимое navbar по вертикали */
+    align-items: center;
+    padding: 0 15px;
+    background: lightgray;
+}
+
+/* ссылки в самом navbar  */
+.navbar__links {
+    /* ссылки будут в правлм углу */
+    margin-left: auto;
+}
+

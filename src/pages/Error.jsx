@@ -4,7 +4,7 @@ const Error = () => {
     return (
         <div>
             <h1 style={{color: 'red'}}>
-                You're tying to open non-existing page!
+                You're trying to open non-existing page!
             </h1>
         </div>
     );

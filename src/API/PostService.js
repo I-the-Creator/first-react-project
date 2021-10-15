@@ -11,6 +11,7 @@ export default class PostService {
         // отлавливаем ошибку при запросе
         // try {
             // ЗАПРОС axios, вторым параметром в get передаем объект свойств которые будут добавлены к URL
+                        // query parameters - limit & page
             const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
                 params: {
                     _limit: limit,
@@ -24,5 +25,12 @@ export default class PostService {
         // } catch (error) {
         //     console.log(error)
         // }
+    }
+
+    // функция запроса на сервер по id поста
+    static async getById(id) {
+            // без query параметров
+            const response = await axios.get('https://jsonplaceholder.typicode.com/posts/' + id)
+            return response
     }
 }

@@ -27,10 +27,19 @@ export default class PostService {
         // }
     }
 
-    // функция запроса на сервер по id поста
+    // функция запроса на сервер по id поста - выбранный пост
     static async getById(id) {
             // без query параметров
             const response = await axios.get('https://jsonplaceholder.typicode.com/posts/' + id)
             return response
     }
+
+    // функция запроса комментариев по id поста
+    static async getCommentsById(id) {
+        // без query параметров
+        const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}/comments`)
+        return response
+    }
 }
+
+

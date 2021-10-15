@@ -9,10 +9,14 @@ import Loader from '../components/UI/Loader/Loader';
 
 const PostIdPage = () => {
     const params = useParams()
-    console.log(params)  //  объект с параметрами переданными в URL - id поста 
+    // console.log(params)  //  объект с параметрами переданными в URL - id поста 
 
-    // создаем состояние 'post' и помещаем туда ответ сервера - объект
+    // создаем состояние 'post' и помещаем туда ответ сервера - объект содержащий выбранный пост
     const [post, setPost] = useState({})  // пустой оюъект by default - первая отрисовка
+
+    // state для комментариев
+    const [comments, setComments] = useState([])  // пустой массив комментариев по дефолту
+    // console.log(comments); // пусто, запрос еще не выполнен
     
     // используем кастомный хук useFetching для отправки запросов
     // возвращает массив элементов - 1)некоторая функция, 2)индикатор загрузки, 3)ошибка
@@ -22,16 +26,29 @@ const PostIdPage = () => {
         // 'дергаем' PostService и метод getById
         // await перед вызовом метода
         const response = await PostService.getById(id)
-        console.log(response);
+        // console.log(response);
         setPost(response.data);
+
+    })
+
+
+    // получение комментариев к посту
+    const[fetchComments, isComLoading, comError] = useFetching( async (id) => {
+        // 'дергаем' PostService и метод getById
+        // await перед вызовом метода
+        const response = await PostService.getCommentsById(id)
+        // console.log(response);
+        setComments(response.data);
 
     })
 
 
     // при первой отрисовке компонента получаем данные с сервера
     useEffect ( () => {
-        // вызов функции fetchPostsById и передаем в качестве параметра params.id
+        // вызов функции fetchPostsById и передаем в качестве параметра params.id = id поста
         fetchPostsById(params.id)
+        // вызов функции fetchComments и в качестве параметра передаем id posts
+        fetchComments(params.id)
     }, [])
 
 
@@ -43,6 +60,24 @@ const PostIdPage = () => {
                 ? <Loader/>
                     // вывод поста
                 : <div>{post.id}. {post.title}</div>
+            }
+            <h1>
+                Comments
+            </h1>
+            {/* проверка загрузки, если загружаются комментарии то отрисовываем Loader, иначе подгружаем полученную структура*/}
+            {isComLoading
+                ? <Loader/>
+                : <div>
+                    {/* иттерируемся (.map) по массиву комментариев и для каждого комментария отрисовываем шаблон  */}
+                    {comments.map(comm =>   //  comm - отдельный объект с комментарием
+                        <div style={{marginTop: 15}}>
+                            {/* email пользователя */}
+                            <h5>{comm.email}</h5>
+                            {/* тело комментария */}
+                            <div>{comm.body}</div>   
+                        </div>
+                    )}
+                </div>
             }
         </div>
     );

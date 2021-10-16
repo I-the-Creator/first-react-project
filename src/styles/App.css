@@ -77,6 +77,10 @@
     margin-left: auto;
 }
 
+.navbar__links a {
+    padding-left: 10px;
+}
+
 .post__btns {
     display: flex;
 }

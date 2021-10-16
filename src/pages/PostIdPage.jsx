@@ -54,7 +54,7 @@ const PostIdPage = () => {
 
     return (
         <div>
-            <h1>You've opened post page with ID = {params.id}</h1>
+            <h1>You've opened Post with ID = {params.id}</h1>
             {/* индикация загрузки по условию, если IsLoading == true, то Loader*/}
             {isLoading
                 ? <Loader/>
@@ -70,11 +70,12 @@ const PostIdPage = () => {
                 : <div>
                     {/* иттерируемся (.map) по массиву комментариев и для каждого комментария отрисовываем шаблон  */}
                     {comments.map(comm =>   //  comm - отдельный объект с комментарием
-                        <div style={{marginTop: 15}}>
+                    // в качестве ключа указываем id комментария
+                        <div key={comm.id} style={{marginTop: 15}}>
                             {/* email пользователя */}
                             <h5>{comm.email}</h5>
                             {/* тело комментария */}
-                            <div>{comm.body}</div>   
+                            <div>{comm.body}</div>
                         </div>
                     )}
                 </div>

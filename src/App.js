@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './components/AppRouter';
 import Navbar from './components/UI/Navbar/Navbar';
 import { AuthContext } from './context';
-import About from './pages/About';
-import Error from './pages/Error';
-import Posts from './pages/Posts';
 import './styles/App.css';
 
 function App() {

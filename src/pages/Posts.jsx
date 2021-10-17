@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRef } from 'react/cjs/react.development';
 import PostService from '../API/PostService'; // import class PostService
 import PostFilter from '../components/PostFilter';
 import PostForm from '../components/PostForm';
@@ -7,7 +8,9 @@ import MyButton from '../components/UI/button/MyButton';
 import Loader from '../components/UI/Loader/Loader';
 import MyModal from '../components/UI/MyModal/MyModal';
 import Pagination from '../components/UI/pagination/Pagination';
+import MySelect from '../components/UI/select/MySelect';
 import { useFetching } from '../hooks/useFetching';
+import { useObserver } from '../hooks/useObserver';
 import { usePosts } from '../hooks/usePosts';
 import { getPageCount } from '../utils/pages';
 
@@ -71,14 +74,23 @@ const [totalPages, setTotalPages] = useState(0)  // 0 by default
 
 // state для лимита постов на страницу, 10 по умолчанию - передаем в функцию 'getAll' PostServic.js
 const [limit, setLimit] = useState(10)
+// console.log(limit)
 
 // state для хранения номера текущей (отображаемой) страницы, по умолчанию 1 - передаем в функцию 'getAll' PostServic.js
 const [page, setPage] = useState(1)
 
 
 // сортировка и поисковая фильтрация
-const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query)
+const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query);
 
+
+
+
+// инициализация последнего элемента на странице
+// когда этот элемент появится в зоне видимости окна браузера, будет подгружаться новая порция данных
+const lastElement = useRef() //  хук useRef для получения элемнента и референс передаем в последний элеме
+console.log(lastElement)  // в поле current референса находится целевой блок div
+console.log(lastElement.current)  // в поле current референса находится целевой блок div
 
 // состояние isPostLoading для 'заполнения' на время загрузки постов, по умолчанию false
 // const [isPostLoading, setIsPostLoading] = useState(false)
@@ -87,7 +99,8 @@ const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query)
 const [fetchPosts, isPostLoading, postError ] = useFetching(async (limit, page) => {
     const response = await PostService.getAll(limit, page);   // вызываем PostService который возвращает весь response сервера 
     // console.log(page);
-    setPosts(response.data);  //  сетим (изменяем) состояние setPosts и передаем в качестве аргумента response.data - массив постов
+    // создаем новый массив, помещакем туда те посты которые естьи в конец добавляем новую порцию
+    setPosts([...posts, ...response.data]);  //  сетим (изменяем) состояние setPosts и передаем в качестве аргумента response.data - массив постов
 
     // получаем общее количество постов
     const totalCount = response.headers['x-total-count'];
@@ -98,7 +111,6 @@ const [fetchPosts, isPostLoading, postError ] = useFetching(async (limit, page) 
     setTotalPages(getPageCount(totalCount, limit));
 })
 // console.log(totalPages); // debug
-
 
 
 // function getSortedPosts() {
@@ -112,13 +124,20 @@ const createPost = (newPost) => {
     setModal(false) // передаем в state 'modal' аргумент false для сокрытия мод. окна после создания поста
 }
 
+// подключаем кастомный хук useObserver, передаем параметры
+// последний элемент, нужное нам условие, isPostLoading (загрузились ли посты) и последним передаем callback
+// в котором изменяем номер страницы на 1
+useObserver(lastElement, page < totalPages, isPostLoading, () => {
+    setPage(page + 1)
+})
 
 // deps пустой чтобы функция отработала в начале - подгрузка постов при загрузке приложения
 useEffect(() => {
-    console.log('USE EFFECT DEMONSTRATION') //  debug
+    console.log('USEEFFECT DEMONSTRATION') //  debug
     // отработает один раз при монтаже - посты сразу подгружаются, а затем при каждом изменении состояния 'page'
     fetchPosts(limit, page)   // fetching каждый раз с текущим значением limit и page через хук useFetching 
-}, [])   //  deps array
+    // в deps добавляем state 'page'(c номером страницы), и на каждое изменение номера будут подгружаться новые посты
+}, [page, limit])   //  deps array, срабатывает при изменении номера страницы и лимита постов на странице
 
 
 // функция запроса массива постов из API - возвращает массив постов
@@ -194,18 +213,40 @@ const changePage = (page) => {
                 setFilter={setFilter}    
             />
 
+            {/* управление лимитом постов на страницу, выпадающий список */}
+            <MySelect
+                value={limit}
+                onChange={limitValue => {setLimit(limitValue);
+                    console.log(limitValue);}
+                }
+                
+                defaultValue="Posts number on page"
+                // массив опций
+                options={[
+                    {value: 5, name: '5'},
+                    {value: 10, name: '10'},
+                    {value: 25, name: '25'},
+                    // limit == -1 - отображает все посты
+                    {value: -1, name: 'All Posts'},
+                ]}
+            />
+
             {/* Индикатор ошибки */}
             {postError &&    //  если postError не пустой (true), то выводит ошибку - второй операнд &&
                 <h1>An Error Occurred: '{postError}'</h1>
             }
 
-            {/* условие для isPostLoading */}
-            {isPostLoading
-                ? <div style={{display: 'flex', justifyContent: 'center', marginTop: 50}}><Loader/></div>  // если true, показываем крутилку
-                // если false, то передаем в props 'posts' отфильтрованный(после поиска) и отсорт. массив
-                // показываем список постов
-                :  <PostList remove={removePost} posts={sortedAndSearchPosts} title="Articles"/>
-                
+            {/* список постов отрисовывается в любом случае */}
+            <PostList remove={removePost} posts={sortedAndSearchPosts} title="Articles"/> 
+
+
+            {/* когда этот блок попадает в зону видимости, подгружается новая порция данных*/}
+            {/* референс - lastElement, по нему получаем доступ к DOM элементу  */}
+            <div ref={lastElement} style={{height:20, background:'red'}}/>
+
+            {/* условие для isPostLoading, Loader показывается только если isLoading == true */}
+            {isPostLoading &&
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: 50}}><Loader/></div>  // если true, показываем крутилку
             }
                 
 
